@@ -272,20 +272,24 @@
       margin: 2rem 0;
     }
     /* ----- responsive: mobile styles ----- */
-    @media (max-width: 800px) {
-      .wrapper {
-        flex-direction: column;
-      }
-      .sidebar {
-        display: none; /* hide sidebar */
-      }
-      .mobile-nav {
-        display: flex; /* show mobile navigation */
-      }
-      .content {
-        padding: 2rem 1.5rem;
-      }
-    }
+@media (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    display: none;
+  }
+  .mobile-nav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* optional */
+  }
+  .content {
+    padding: 2rem 1.5rem;
+  }
+}
   </style>
 </head>
 <body>
