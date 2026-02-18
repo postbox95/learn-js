@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📘 JS learning · phases 1‑4 (with full explanations)</title>
+  <style>
+    /* (CSS unchanged – same as before) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: #f8faff;
+      color: #1e2b3c;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      background: #0b1c2f;
+      color: white;
+      padding: 1.2rem 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      font-weight: 500;
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      color: #a0c0e0;
+      margin-top: 0.3rem;
+      font-size: 1.1rem;
+    }
+    .wrapper {
+      display: flex;
+      flex: 1;
+    }
+    .sidebar {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #dde3ed;
+      padding: 2rem 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.02);
+    }
+    .sidebar h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4a6583;
+      margin: 1.5rem 0 0.8rem 0;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar a {
+      display: block;
+      padding: 0.5rem 1rem;
+      background: #f1f6fc;
+      border-radius: 30px;
+      color: #1e3a5f;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      background: #e0eaff;
+      border-left-color: #2b6c9e;
+    }
+    .content {
+      flex: 1;
+      padding: 2.5rem 3rem;
+      max-width: 1000px;
+      background: #ffffff;
+    }
+    .module {
+      scroll-margin-top: 2rem;
+      margin-bottom: 4rem;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 2.5rem;
+    }
+    .module:last-child {
+      border-bottom: none;
+    }
+    .module h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      background: linear-gradient(145deg, #133b5c, #1d4e7c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+      border-left: 6px solid #1e4b6e;
+      padding-left: 1.2rem;
+    }
+    .module h3 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: #234c73;
+      margin: 1.8rem 0 1rem 0;
+    }
+    .explain {
+      background: #f2f7fd;
+      padding: 1.5rem 2rem;
+      border-radius: 20px;
+      margin: 1.2rem 0;
+      font-size: 1.1rem;
+      border-left: 6px solid #326a9e;
+      box-shadow: 0 4px 10px rgba(0,30,50,0.05);
+    }
+    .explain p {
+      margin-bottom: 1rem;
+    }
+    .explain ul {
+      margin-left: 1.5rem;
+      list-style: disc;
+      margin-bottom: 1rem;
+    }
+    .code-block {
+      background: #0e1e2c;
+      color: #e4f0ff;
+      padding: 1.2rem 1.8rem;
+      border-radius: 16px;
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+      border: 1px solid #2f4a62;
+      box-shadow: inset 0 0 10px #00000030;
+    }
+    .btn-run {
+      background: #1f5a96;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      padding: 0.6rem 2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin: 0.5rem 0 1rem 0;
+      box-shadow: 0 6px 12px #1f5a9630;
+      transition: 0.15s;
+      border: 1px solid #4791cf;
+    }
+    .btn-run:hover {
+      background: #134e82;
+      transform: scale(1.02);
+    }
+    .demo-box {
+      background: #e9f2fa;
+      border: 2px dashed #2c6b9e;
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #0f3d5e;
+    }
+    #dom-demo {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .demo-btn {
+      background: #1d7a5e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.8rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .console-panel {
+      background: #111c27;
+      color: #bbe1ff;
+      font-family: 'Fira Code', monospace;
+      padding: 1.5rem 2rem;
+      border-radius: 28px 28px 0 0;
+      margin-top: 3rem;
+      border-top: 3px solid #336b99;
+      box-shadow: 0 -8px 20px rgba(0,0,0,0.2);
+    }
+    .console-panel h3 {
+      color: #c6e2ff;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    #console-output {
+      background: #0b141e;
+      padding: 1.2rem;
+      border-radius: 16px;
+      min-height: 100px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    #console-output div {
+      border-bottom: 1px solid #28445c;
+      padding: 4px 0;
+      font-family: 'Cascadia Code', monospace;
+    }
+    hr {
+      border: none;
+      border-top: 2px dotted #b2c9de;
+      margin: 2rem 0;
+    }
+    @media (max-width: 800px) {
+      .wrapper { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid #ccc; }
+      .content { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>🧠 JavaScript · phase 1 to 4</h1>
+    <p>from zero to advanced — simple words, real code</p>
+  </header>
+
+  <div class="wrapper">
+    <nav class="sidebar">
+      <h3>📌 PHASE 1 · FOUNDATION</h3>
+      <ul>
+        <li><a href="#intro">1.1 Hello world & setup</a></li>
+        <li><a href="#variables">1.2 Variables & data types</a></li>
+        <li><a href="#operators">1.3 Operators</a></li>
+        <li><a href="#control">1.4 Control flow (if/else)</a></li>
+        <li><a href="#loops">1.5 Loops (for/while)</a></li>
+        <li><a href="#functions">1.6 Functions basics</a></li>
+      </ul>
+      <h3>🚀 PHASE 2 · CORE + DOM</h3>
+      <ul>
+        <li><a href="#objects">2.1 Objects</a></li>
+        <li><a href="#arrays">2.2 Arrays (map, filter, ...)</a></li>
+        <li><a href="#dom">2.3 DOM magic</a></li>
+        <li><a href="#events">2.4 Events</a></li>
+        <li><a href="#json">2.5 JSON</a></li>
+      </ul>
+      <h3>⚡ PHASE 3 · PROFESSIONAL TOOLKIT</h3>
+      <ul>
+        <li><a href="#async">3.1 Async JS (Promises, async/await)</a></li>
+        <li><a href="#fetch">3.2 Fetch & APIs</a></li>
+        <li><a href="#modern">3.3 Modern ES6+ (destructure, spread)</a></li>
+        <li><a href="#errors">3.4 Error handling & debugging</a></li>
+        <li><a href="#tooling">3.5 Tooling & Git (concepts)</a></li>
+      </ul>
+      <h3>🧩 PHASE 4 · ADVANCED CONCEPTS</h3>
+      <ul>
+        <li><a href="#adv-functions">4.1 Advanced functions (closures)</a></li>
+        <li><a href="#oop">4.2 OOP (classes, prototypes)</a></li>
+        <li><a href="#this">4.3 The 'this' keyword</a></li>
+        <li><a href="#storage">4.4 Browser storage</a></li>
+        <li><a href="#patterns">4.5 Design patterns & perf</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <!-- ========== PHASE 1 (with detailed explanations) ========== -->
+      <section id="intro" class="module">
+        <h2>🔰 1.1 Hello, world!</h2>
+        <div class="explain">
+          <p><strong>JavaScript is the language of the web.</strong> It runs in your browser and makes pages interactive. Think of it as giving instructions to the browser.</p>
+          <p>Your first instruction: <code>console.log()</code>. It prints messages to the <strong>console</strong> (like a hidden panel for developers). You can open it with F12. We'll use it constantly to see what our code does.</p>
+          <p>In the example, we print a greeting and a number. Simple! You're already programming.</p>
+        </div>
+        <div class="code-block">
+          // your first program<br>
+          console.log("Hello, future coder!");<br>
+          console.log(2025);
+        </div>
+        <button class="btn-run" data-code="console.log('Hello, future coder!'); console.log(2025);">▶ run example</button>
+      </section>
+
+      <section id="variables" class="module">
+        <h2>📦 1.2 Variables & data types</h2>
+        <div class="explain">
+          <p><strong>Variables are like labelled boxes</strong> where you store information. <code>let</code> creates a box you can change later. <code>const</code> creates a box that cannot be reassigned (constant).</p>
+          <p>Different kinds of information have different <strong>data types</strong>:</p>
+          <ul>
+            <li><strong>number</strong> – for any number, like 25 or 3.14.</li>
+            <li><strong>string</strong> – text, wrapped in quotes.</li>
+            <li><strong>boolean</strong> – true or false.</li>
+            <li><strong>undefined</strong> – a variable that hasn't been given a value yet.</li>
+            <li><strong>null</strong> – intentionally empty.</li>
+          </ul>
+          <p>The code below creates variables of each type and prints them.</p>
+        </div>
+        <div class="code-block">
+          let age = 25;                // number<br>
+          const name = "Alex";          // string<br>
+          let isStudent = true;         // boolean<br>
+          let city;                     // undefined<br>
+          let empty = null;             // null<br>
+          console.log(age, name, isStudent, city, empty);
+        </div>
+        <button class="btn-run" data-code="let age = 25; const name = 'Alex'; let isStudent = true; let city; let empty = null; console.log(age, name, isStudent, city, empty);">▶ run example</button>
+      </section>
+
+      <section id="operators" class="module">
+        <h2>🧮 1.3 Operators</h2>
+        <div class="explain">
+          <p><strong>Operators are action symbols.</strong> They let you do math, compare values, or combine conditions.</p>
+          <ul>
+            <li><strong>Arithmetic:</strong> <code>+ - * / %</code> (plus, minus, times, divide, remainder).</li>
+            <li><strong>Comparison:</strong> <code>===</code> (strict equal), <code>!==</code> (strict not equal), <code>></code>, <code><</code>. They give true/false.</li>
+            <li><strong>Logical:</strong> <code>&&</code> (AND – both true), <code>||</code> (OR – at least one true), <code>!</code> (NOT – flips true/false).</li>
+          </ul>
+          <p>The example shows each type in action.</p>
+        </div>
+        <div class="code-block">
+          let a = 15, b = 4;<br>
+          console.log('sum:', a + b);<br>
+          console.log('modulo:', a % b);<br>
+          console.log('equal?', a === b);<br>
+          console.log('logical AND:', a > 10 && b < 5);
+        </div>
+        <button class="btn-run" data-code="let a = 15, b = 4; console.log('sum:', a + b); console.log('modulo:', a % b); console.log('equal?', a === b); console.log('logical AND:', a > 10 && b < 5);">▶ run example</button>
+      </section>
+
+      <section id="control" class="module">
+        <h2>⚖️ 1.4 Control flow (if / else)</h2>
+        <div class="explain">
+          <p>Programs need to make decisions. <strong><code>if</code> and <code>else</code></strong> let you run different code based on conditions.</p>
+          <p>Think of it like a fork in the road: if the condition is true, go one way; otherwise, go another.</p>
+          <p>You can chain multiple conditions with <code>else if</code>. The example checks a score and prints a grade.</p>
+        </div>
+        <div class="code-block">
+          let score = 85;<br>
+          if (score >= 90) {<br>
+          &nbsp;&nbsp;console.log('grade A');<br>
+          } else if (score >= 75) {<br>
+          &nbsp;&nbsp;console.log('grade B');<br>
+          } else {<br>
+          &nbsp;&nbsp;console.log('try again');<br>
+          }
+        </div>
+        <button class="btn-run" data-code="let score = 85; if (score >= 90) { console.log('grade A'); } else if (score >= 75) { console.log('grade B'); } else { console.log('try again'); }">▶ run example</button>
+      </section>
+
+      <section id="loops" class="module">
+        <h2>🔄 1.5 Loops</h2>
+        <div class="explain">
+          <p><strong>Loops repeat code.</strong> They save you from writing the same thing over and over.</p>
+          <ul>
+            <li><strong><code>for</code> loop:</strong> when you know how many times to repeat (e.g., count 1 to 5).</li>
+            <li><strong><code>while</code> loop:</strong> repeats as long as a condition is true.</li>
+          </ul>
+          <p>The first loop counts from 1 to 5. The second counts down from 3 to 1.</p>
+        </div>
+        <div class="code-block">
+          // for loop: count 1 to 5<br>
+          for (let i = 1; i <= 5; i++) {<br>
+          &nbsp;&nbsp;console.log('number', i);<br>
+          }<br><br>
+          // while loop<br>
+          let count = 3;<br>
+          while (count > 0) {<br>
+          &nbsp;&nbsp;console.log('countdown', count);<br>
+          &nbsp;&nbsp;count--;<br>
+          }
+        </div>
+        <button class="btn-run" data-code="for (let i = 1; i <= 5; i++) { console.log('number', i); } let count = 3; while (count > 0) { console.log('countdown', count); count--; }">▶ run example</button>
+      </section>
+
+      <section id="functions" class="module">
+        <h2>⚙️ 1.6 Functions basics</h2>
+        <div class="explain">
+          <p><strong>Functions are reusable recipes.</strong> You define a block of code once, give it a name, and then you can "call" it whenever you need it.</p>
+          <p>Functions can take <strong>parameters</strong> (inputs) and <strong>return</strong> a value (output). The example function <code>greet</code> takes a name and returns a greeting.</p>
+          <p>This keeps your code DRY (Don't Repeat Yourself).</p>
+        </div>
+        <div class="code-block">
+          function greet(name) {<br>
+          &nbsp;&nbsp;return 'Hello, ' + name + '!';<br>
+          }<br>
+          let message = greet('Sam');<br>
+          console.log(message);
+        </div>
+        <button class="btn-run" data-code="function greet(name) { return 'Hello, ' + name + '!'; } let message = greet('Sam'); console.log(message);">▶ run example</button>
+      </section>
+
+      <!-- ========== PHASE 2 (with detailed explanations) ========== -->
+      <section id="objects" class="module">
+        <h2>🏷️ 2.1 Objects</h2>
+        <div class="explain">
+          <p><strong>Objects bundle related data together.</strong> They use key-value pairs: each piece of data has a name (key) and a value. Think of a student: they have a firstName, age, enrolled status.</p>
+          <p>You can access values with <strong>dot notation</strong> (<code>student.firstName</code>) or <strong>bracket notation</strong> (<code>student['age']</code>). Objects are fundamental for organizing complex data.</p>
+        </div>
+        <div class="code-block">
+          let student = {<br>
+          &nbsp;&nbsp;firstName: 'Emma',<br>
+          &nbsp;&nbsp;age: 20,<br>
+          &nbsp;&nbsp;enrolled: true<br>
+          };<br>
+          console.log(student.firstName);<br>
+          console.log(student['age']);
+        </div>
+        <button class="btn-run" data-code="let student = { firstName: 'Emma', age: 20, enrolled: true }; console.log(student.firstName); console.log(student['age']);">▶ run example</button>
+      </section>
+
+      <section id="arrays" class="module">
+        <h2>📚 2.2 Arrays & methods</h2>
+        <div class="explain">
+          <p><strong>Arrays are ordered lists.</strong> They can hold anything: numbers, strings, even objects.</p>
+          <p>Modern JavaScript gives us powerful methods to work with arrays without writing loops manually:</p>
+          <ul>
+            <li><code>map()</code> – transforms every element, returns a new array.</li>
+            <li><code>filter()</code> – keeps only elements that pass a test.</li>
+            <li><code>forEach()</code> – does something for each element.</li>
+          </ul>
+          <p>The example doubles all numbers and then keeps only the even ones.</p>
+        </div>
+        <div class="code-block">
+          let numbers = [2, 5, 8, 10];<br>
+          let doubled = numbers.map(n => n * 2);<br>
+          console.log('doubled:', doubled);<br>
+          let even = numbers.filter(n => n % 2 === 0);<br>
+          console.log('even:', even);
+        </div>
+        <button class="btn-run" data-code="let numbers = [2,5,8,10]; let doubled = numbers.map(n => n*2); console.log('doubled:', doubled); let even = numbers.filter(n => n%2===0); console.log('even:', even);">▶ run example</button>
+      </section>
+
+      <section id="dom" class="module">
+        <h2>🌲 2.3 DOM (Document Object Model)</h2>
+        <div class="explain">
+          <p><strong>The DOM is the bridge between JavaScript and HTML.</strong> When a web page loads, the browser creates a tree of objects representing every element. JavaScript can modify these objects – changing text, styles, adding or removing elements.</p>
+          <p>You first <strong>select</strong> an element (e.g., with <code>getElementById</code>), then you can change its <code>innerHTML</code> or <code>style</code>. Below, we change the blue demo box.</p>
+        </div>
+        <div class="demo-box" id="dom-demo">
+          <span style="background:#2b5d8c; color:white; padding:10px 20px; border-radius:40px;">I'm a demo box 🟦</span>
+        </div>
+        <div class="code-block">
+          // change the blue box above<br>
+          let box = document.getElementById('dom-demo');<br>
+          box.innerHTML = '✨ text updated by JS!';<br>
+          box.style.backgroundColor = '#f4c542';
+        </div>
+        <button class="btn-run" data-code="let box = document.getElementById('dom-demo'); box.innerHTML = '✨ text updated by JS!'; box.style.backgroundColor = '#f4c542'; box.style.color = 'black';">▶ run DOM example</button>
+        <button class="btn-run" style="background:#3c718b;" data-code="document.getElementById('dom-demo').innerHTML = '<span style=\'background:#2b5d8c; color:white; padding:10px 20px; border-radius:40px;\'>reset to original 🟦</span>'; document.getElementById('dom-demo').style.backgroundColor = ''; document.getElementById('dom-demo').style.color = '';">↩️ reset demo</button>
+      </section>
+
+      <section id="events" class="module">
+        <h2>⏱️ 2.4 Events</h2>
+        <div class="explain">
+          <p><strong>Events are user actions</strong> like clicks, key presses, or mouse movements. You can make your page respond by attaching an <strong>event listener</strong> to an element.</p>
+          <p><code>addEventListener('click', function)</code> tells the browser: "when this element is clicked, run this function." The function can change the page, fetch data, etc.</p>
+          <p>Below, we attach a click listener to the test button. Try clicking it, or run the example to simulate a click.</p>
+        </div>
+        <div class="demo-box">
+          <button class="demo-btn" id="testButton">click this test button</button>
+          <p id="eventMsg" style="margin-top:1rem;">👉 click the button — or run example</p>
+        </div>
+        <div class="code-block">
+          // Attach click event to the button<br>
+          let btn = document.getElementById('testButton');<br>
+          btn.addEventListener('click', function() {<br>
+          &nbsp;&nbsp;document.getElementById('eventMsg').innerText = '✅ button clicked!';<br>
+          });<br>
+          // programmatically trigger click for demo<br>
+          // btn.click();   // (we'll run this)
+        </div>
+        <button class="btn-run" data-code="document.getElementById('testButton').addEventListener('click', function() { document.getElementById('eventMsg').innerText = '✅ button clicked!'; }); document.getElementById('testButton').click();">▶ attach & simulate click</button>
+        <button class="btn-run" style="background:#4a6d8c;" data-code="document.getElementById('eventMsg').innerText = '👉 click the button — or run example';">reset event message</button>
+      </section>
+
+      <section id="json" class="module">
+        <h2>🔁 2.5 JSON</h2>
+        <div class="explain">
+          <p><strong>JSON is a lightweight data format</strong> used everywhere – APIs, config files, storage. It looks almost exactly like a JavaScript object, but with double‑quoted keys.</p>
+          <p><code>JSON.stringify()</code> converts a JavaScript object into a JSON string (to send or save). <code>JSON.parse()</code> converts a JSON string back into an object (to use in code).</p>
+          <p>This is essential when talking to servers or using <code>localStorage</code>.</p>
+        </div>
+        <div class="code-block">
+          let person = { name: 'Mia', age: 28 };<br>
+          let jsonString = JSON.stringify(person);<br>
+          console.log('JSON:', jsonString);<br>
+          let backToObject = JSON.parse(jsonString);<br>
+          console.log('parsed name:', backToObject.name);
+        </div>
+        <button class="btn-run" data-code="let person = { name: 'Mia', age: 28 }; let jsonString = JSON.stringify(person); console.log('JSON:', jsonString); let backToObject = JSON.parse(jsonString); console.log('parsed name:', backToObject.name);">▶ run example</button>
+      </section>
+
+      <!-- ========== PHASE 3 (already enhanced) ========== -->
+      <section id="async" class="module">
+        <h2>⏳ 3.1 Asynchronous JavaScript</h2>
+        <div class="explain">
+          <p><strong>Sometimes code takes time</strong> – like waiting for data from the internet or a timer. JavaScript doesn't stop; it keeps running other code. That's <strong>asynchronous</strong> programming.</p>
+          <p><strong>Promises</strong> are like an IOU note: “I promise I'll give you a result later, either success or failure.” You use <code>.then()</code> to handle the success, and <code>.catch()</code> for errors.</p>
+          <p><strong>Async/await</strong> is a modern way to write promise-based code that looks like normal step-by-step code. Just mark a function <code>async</code>, then inside it use <code>await</code> to wait for a promise to resolve.</p>
+          <p>In the example, we create a promise that waits 1 second, then logs a message. Then we do the same with async/await.</p>
+        </div>
+        <div class="code-block">
+          // Promise that resolves after 1 second<br>
+          const wait = new Promise((resolve) => {<br>
+          &nbsp;&nbsp;setTimeout(() => resolve('done!'), 1000);<br>
+          });<br>
+          wait.then(msg => console.log('promise resolved:', msg));<br>
+          <br>
+          // async/await version<br>
+          (async function() {<br>
+          &nbsp;&nbsp;let msg = await wait;<br>
+          &nbsp;&nbsp;console.log('async/await:', msg);<br>
+          })();
+        </div>
+        <button class="btn-run" data-code="const wait = new Promise((resolve) => { setTimeout(() => resolve('done!'), 1000); }); wait.then(msg => console.log('promise resolved:', msg)); (async function() { let msg = await wait; console.log('async/await:', msg); })();">▶ run async example</button>
+      </section>
+
+      <section id="fetch" class="module">
+        <h2>🌐 3.2 Fetch & APIs</h2>
+        <div class="explain">
+          <p><strong>APIs are like waiters in a restaurant</strong> – you ask for something (data), and they bring it from the kitchen (server). The <code>fetch()</code> function is how we make that request in JavaScript.</p>
+          <p><code>fetch('url')</code> returns a promise. First, we get a response object; we call <code>.json()</code> on it to extract the data (another promise). Then we can use the actual data. Always handle errors with <code>.catch()</code>.</p>
+          <p>Below we fetch a sample to-do item from a free test API (JSONPlaceholder) and print it.</p>
+        </div>
+        <div class="code-block">
+          fetch('https://jsonplaceholder.typicode.com/todos/1')<br>
+          &nbsp;&nbsp;.then(response => response.json())<br>
+          &nbsp;&nbsp;.then(data => console.log('TODO:', data))<br>
+          &nbsp;&nbsp;.catch(err => console.error('fetch error:', err));
+        </div>
+        <button class="btn-run" data-code="fetch('https://jsonplaceholder.typicode.com/todos/1') .then(response => response.json()) .then(data => console.log('TODO:', data)) .catch(err => console.error('fetch error:', err));">▶ run fetch example</button>
+      </section>
+
+      <section id="modern" class="module">
+        <h2>✨ 3.3 Modern ES6+ features</h2>
+        <div class="explain">
+          <p><strong>Destructuring</strong> is a shortcut to pull values out of arrays or objects into variables. Instead of writing <code>const first = colors[0]</code>, you can do <code>const [first] = colors</code>.</p>
+          <p><strong>Spread operator (...)</strong> expands elements. You can copy an array, combine arrays, or add properties to an object without mutating the original.</p>
+          <p>These features make code cleaner and less error‑prone.</p>
+        </div>
+        <div class="code-block">
+          // Array destructuring<br>
+          const colors = ['red', 'green', 'blue'];<br>
+          const [first, second] = colors;<br>
+          console.log('first color:', first);<br>
+          <br>
+          // Object destructuring<br>
+          const user = { name: 'Zoe', age: 24 };<br>
+          const { name, age } = user;<br>
+          console.log(name, age);<br>
+          <br>
+          // Spread operator<br>
+          const moreColors = [...colors, 'yellow', 'purple'];<br>
+          console.log('spread:', moreColors);
+        </div>
+        <button class="btn-run" data-code="const colors = ['red','green','blue']; const [first, second] = colors; console.log('first color:', first); const user = { name: 'Zoe', age: 24 }; const { name, age } = user; console.log(name, age); const moreColors = [...colors, 'yellow', 'purple']; console.log('spread:', moreColors);">▶ run example</button>
+      </section>
+
+      <section id="errors" class="module">
+        <h2>🐞 3.4 Error handling & debugging</h2>
+        <div class="explain">
+          <p><strong>Errors happen – but we can handle them gracefully.</strong> Use <code>try { ... } catch (error) { ... }</code> to wrap code that might fail. If an error occurs inside <code>try</code>, the <code>catch</code> block runs. The <code>finally</code> block always runs, no matter what.</p>
+          <p>You can also <code>throw</code> your own errors to signal something went wrong.</p>
+          <p>The example intentionally creates an “division by zero” error and catches it.</p>
+        </div>
+        <div class="code-block">
+          try {<br>
+          &nbsp;&nbsp;let result = 10 / 0;<br>
+          &nbsp;&nbsp;if (!isFinite(result)) throw new Error('division by zero?');<br>
+          &nbsp;&nbsp;console.log('result:', result);<br>
+          } catch (error) {<br>
+          &nbsp;&nbsp;console.error('caught:', error.message);<br>
+          } finally {<br>
+          &nbsp;&nbsp;console.log('cleanup (always runs)');<br>
+          }
+        </div>
+        <button class="btn-run" data-code="try { let result = 10 / 0; if (!isFinite(result)) throw new Error('division by zero?'); console.log('result:', result); } catch (error) { console.error('caught:', error.message); } finally { console.log('cleanup (always runs)'); }">▶ run error example</button>
+      </section>
+
+      <section id="tooling" class="module">
+        <h2>🛠️ 3.5 Tooling & Git (concepts)</h2>
+        <div class="explain">
+          <p><strong>Git</strong> is like a time machine for your code. It tracks every change so you can go back if something breaks. Basic commands: <code>git init</code> (start tracking), <code>git add .</code> (stage changes), <code>git commit -m "message"</code> (save a snapshot), <code>git push</code> (upload to GitHub).</p>
+          <p><strong>npm</strong> (Node Package Manager) lets you use code written by others. You’ll later run commands like <code>npm install</code> to add libraries.</p>
+          <p>We can’t run Git in this page, but the example reminds you of the typical workflow.</p>
+        </div>
+        <div class="code-block">
+          // No live demo, but typical commands:<br>
+          // git init<br>
+          // git add .<br>
+          // git commit -m "first commit"<br>
+          // git push origin main
+        </div>
+        <button class="btn-run" data-code="console.log('Git basics: init, add, commit, push');">▶ show message</button>
+      </section>
+
+      <!-- ========== PHASE 4 (already enhanced) ========== -->
+      <section id="adv-functions" class="module">
+        <h2>🎣 4.1 Advanced functions (closures)</h2>
+        <div class="explain">
+          <p>A <strong>closure</strong> happens when a function “remembers” the variables from its birthplace, even after the birthplace has finished running.</p>
+          <p>Imagine a function that creates a counter: it defines a variable <code>count</code> and returns another function that increments and returns <code>count</code>. That inner function has a closure over <code>count</code> – it can still access it later. Each call to the counter updates the same <code>count</code>.</p>
+          <p>Closures are used for data privacy, function factories, and many advanced patterns.</p>
+        </div>
+        <div class="code-block">
+          function makeCounter() {<br>
+          &nbsp;&nbsp;let count = 0;<br>
+          &nbsp;&nbsp;return function() {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;count++;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;return count;<br>
+          &nbsp;&nbsp;};<br>
+          }<br>
+          const counter = makeCounter();<br>
+          console.log(counter()); // 1<br>
+          console.log(counter()); // 2
+        </div>
+        <button class="btn-run" data-code="function makeCounter() { let count = 0; return function() { count++; return count; }; } const counter = makeCounter(); console.log(counter()); console.log(counter());">▶ run closure example</button>
+      </section>
+
+      <section id="oop" class="module">
+        <h2>🏛️ 4.2 OOP (classes, prototypes)</h2>
+        <div class="explain">
+          <p><strong>Object‑Oriented Programming</strong> helps you organize code by creating blueprints (classes) for objects. A class defines properties and methods. You create instances with <code>new</code>.</p>
+          <p>With <strong>inheritance</strong> (<code>extends</code>), a class can reuse and extend another class. For example, a <code>Dog</code> class inherits from <code>Animal</code> and can override the <code>speak</code> method.</p>
+          <p>Behind the scenes, JavaScript uses <strong>prototypes</strong> – objects inherit from other objects. Classes are just a cleaner syntax for that.</p>
+        </div>
+        <div class="code-block">
+          class Animal {<br>
+          &nbsp;&nbsp;constructor(name) { this.name = name; }<br>
+          &nbsp;&nbsp;speak() { console.log(`${this.name} makes a sound`); }<br>
+          }<br>
+          class Dog extends Animal {<br>
+          &nbsp;&nbsp;speak() { console.log(`${this.name} barks`); }<br>
+          }<br>
+          const pet = new Dog('Rex');<br>
+          pet.speak();
+        </div>
+        <button class="btn-run" data-code="class Animal { constructor(name) { this.name = name; } speak() { console.log(`${this.name} makes a sound`); } } class Dog extends Animal { speak() { console.log(`${this.name} barks`); } } const pet = new Dog('Rex'); pet.speak();">▶ run OOP example</button>
+      </section>
+
+      <section id="this" class="module">
+        <h2>🔍 4.3 The 'this' keyword</h2>
+        <div class="explain">
+          <p><code>this</code> is a special keyword that refers to the <strong>context</strong> in which a function is called. It can be tricky:</p>
+          <ul>
+            <li>In a regular function, <code>this</code> refers to the object that called it (e.g., <code>person.greet()</code> → <code>this</code> = <code>person</code>).</li>
+            <li>In an arrow function, <code>this</code> is taken from the surrounding scope (lexical <code>this</code>) – it doesn't get its own.</li>
+            <li>If you call a function without an object, <code>this</code> is the global object (or <code>undefined</code> in strict mode).</li>
+          </ul>
+          <p>The example shows the difference: <code>greet</code> uses the object’s <code>name</code>, while <code>arrowGreet</code> uses the outer <code>this</code> (likely <code>window</code>, which has no <code>name</code>).</p>
+        </div>
+        <div class="code-block">
+          const person = {<br>
+          &nbsp;&nbsp;name: 'Alex',<br>
+          &nbsp;&nbsp;greet: function() { console.log('Hello, ' + this.name); },<br>
+          &nbsp;&nbsp;arrowGreet: () => console.log('Hello, ' + this.name) // 'this' is outer scope (likely window)<br>
+          };<br>
+          person.greet();      // Hello, Alex<br>
+          person.arrowGreet(); // Hello, undefined (in strict mode)
+        </div>
+        <button class="btn-run" data-code="const person = { name: 'Alex', greet: function() { console.log('Hello, ' + this.name); }, arrowGreet: () => console.log('Hello, ' + this.name) }; person.greet(); person.arrowGreet();">▶ run 'this' example</button>
+      </section>
+
+      <section id="storage" class="module">
+        <h2>💾 4.4 Browser storage</h2>
+        <div class="explain">
+          <p>Browsers give us small databases to store data on the user's device.</p>
+          <p><strong>localStorage</strong> saves data with no expiration – it stays even after you close the browser. <strong>sessionStorage</strong> clears when the tab is closed. Both store strings, so you often use <code>JSON.stringify</code> and <code>JSON.parse</code> for objects.</p>
+          <p>Methods: <code>setItem(key, value)</code>, <code>getItem(key)</code>, <code>removeItem(key)</code>.</p>
+          <p>Below, we store a name and retrieve it. Try the interactive buttons too!</p>
+        </div>
+        <div class="demo-box" id="storage-demo">
+          <p>Stored name: <span id="storedName">(not set)</span></p>
+          <button class="demo-btn" id="saveStorage">save 'Alex' to localStorage</button>
+          <button class="demo-btn" id="loadStorage">load from storage</button>
+        </div>
+        <div class="code-block">
+          // Save and load from localStorage<br>
+          localStorage.setItem('username', 'Alex');<br>
+          let name = localStorage.getItem('username');<br>
+          console.log('from storage:', name);
+        </div>
+        <button class="btn-run" data-code="localStorage.setItem('username', 'Alex'); let name = localStorage.getItem('username'); console.log('from storage:', name); document.getElementById('storedName').innerText = name;">▶ run storage demo</button>
+        <button class="btn-run" data-code="localStorage.removeItem('username'); document.getElementById('storedName').innerText = '(not set)'; console.log('storage cleared');">🗑️ clear storage</button>
+        <script>
+          // interactive buttons for storage demo
+          document.addEventListener('DOMContentLoaded', function() {
+            const saveBtn = document.getElementById('saveStorage');
+            const loadBtn = document.getElementById('loadStorage');
+            const storedSpan = document.getElementById('storedName');
+            if (saveBtn) {
+              saveBtn.addEventListener('click', function() {
+                localStorage.setItem('username', 'Alex');
+                storedSpan.innerText = 'Alex';
+                console.log('saved Alex to localStorage');
+              });
+            }
+            if (loadBtn) {
+              loadBtn.addEventListener('click', function() {
+                let name = localStorage.getItem('username');
+                storedSpan.innerText = name || '(not set)';
+                console.log('loaded:', name);
+              });
+            }
+          });
+        </script>
+      </section>
+
+      <section id="patterns" class="module">
+        <h2>⚡ 4.5 Design patterns & performance</h2>
+        <div class="explain">
+          <p><strong>Debouncing</strong> is a performance trick: it ensures a function is not called too often. For example, if you have a search input that fetches results as you type, you don't want to fetch on every keystroke – you wait until the user pauses.</p>
+          <p>How it works: every time the event fires, we clear the previous timer and set a new one. The function only runs after the specified delay without any new calls.</p>
+          <p>The example creates a debounced <code>sayHi</code> that will only execute once after 1 second, even if we call it three times in a row.</p>
+        </div>
+        <div class="code-block">
+          function debounce(fn, delay) {<br>
+          &nbsp;&nbsp;let timer;<br>
+          &nbsp;&nbsp;return function(...args) {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;clearTimeout(timer);<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;timer = setTimeout(() => fn.apply(this, args), delay);<br>
+          &nbsp;&nbsp;};<br>
+          }<br>
+          const sayHi = debounce(() => console.log('hi (debounced)'), 1000);<br>
+          sayHi(); sayHi(); sayHi(); // only one 'hi' after 1 sec
+        </div>
+        <button class="btn-run" data-code="function debounce(fn, delay) { let timer; return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), delay); }; } const sayHi = debounce(() => console.log('hi (debounced)'), 1000); sayHi(); sayHi(); sayHi(); console.log('called 3 times, but only one hi after delay');">▶ run debounce example</button>
+      </section>
+
+      <!-- global console panel -->
+      <div class="console-panel">
+        <h3>📟 live console output</h3>
+        <div id="console-output">
+          <div>> output will appear here</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function() {
+      const outputDiv = document.getElementById('console-output');
+
+      function runCode(code) {
+        outputDiv.innerHTML = '';
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        console.log = function(...args) {
+          const line = args.map(arg => 
+            (typeof arg === 'object' && arg !== null) ? JSON.stringify(arg, null, 2) : String(arg)
+          ).join(' ');
+          outputDiv.innerHTML += `<div>> ${line}</div>`;
+          originalLog.apply(console, args);
+        };
+
+        console.error = function(...args) {
+          const line = args.map(String).join(' ');
+          outputDiv.innerHTML += `<div style="color: #ff9393;">⛔ ${line}</div>`;
+          originalError.apply(console, args);
+        };
+
+        console.warn = function(...args) {
+          const line = args.map(String).join(' ');
+          outputDiv.innerHTML += `<div style="color: #f7d44e;">⚠️ ${line}</div>`;
+          originalWarn.apply(console, args);
+        };
+
+        try {
+          const func = new Function(code);
+          func();
+        } catch (e) {
+          outputDiv.innerHTML += `<div style="color: #ff9393;">🔥 uncaught error: ${e.message}</div>`;
+        } finally {
+          console.log = originalLog;
+          console.error = originalError;
+          console.warn = originalWarn;
+        }
+      }
+
+      const buttons = document.querySelectorAll('.btn-run');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const code = this.getAttribute('data-code');
+          if (code) runCode(code);
+        });
+      });
+
+      document.querySelectorAll('.sidebar a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
