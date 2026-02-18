@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📘 JS learning · phases 1‑4 (with full explanations)</title>
+  <title>📘 JS learning · phases 1‑4 (mobile nav)</title>
   <style>
-    /* (CSS unchanged – same as before) */
+    /* ----- base styles (unchanged) ----- */
     * {
       margin: 0;
       padding: 0;
@@ -40,6 +40,7 @@
       display: flex;
       flex: 1;
     }
+    /* ----- desktop sidebar (hidden on mobile) ----- */
     .sidebar {
       width: 280px;
       background: white;
@@ -83,6 +84,48 @@
       background: #e0eaff;
       border-left-color: #2b6c9e;
     }
+    /* ----- mobile navigation (hidden on desktop) ----- */
+    .mobile-nav {
+      display: none;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid #b0c6dd;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .mobile-nav label {
+      font-weight: 600;
+      color: #1e3a5f;
+    }
+    .mobile-nav select {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.7rem 1rem;
+      border-radius: 40px;
+      border: 1px solid #acc4db;
+      background: #f1f7ff;
+      font-size: 1rem;
+      color: #0b2a44;
+      font-weight: 500;
+    }
+    .mobile-nav .go-btn {
+      background: #1f5a96;
+      border: none;
+      color: white;
+      padding: 0.7rem 2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      border: 1px solid #4791cf;
+      transition: 0.15s;
+    }
+    .mobile-nav .go-btn:hover {
+      background: #134e82;
+    }
+    /* ----- main content ----- */
     .content {
       flex: 1;
       padding: 2.5rem 3rem;
@@ -228,10 +271,20 @@
       border-top: 2px dotted #b2c9de;
       margin: 2rem 0;
     }
+    /* ----- responsive: mobile styles ----- */
     @media (max-width: 800px) {
-      .wrapper { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid #ccc; }
-      .content { padding: 2rem 1.5rem; }
+      .wrapper {
+        flex-direction: column;
+      }
+      .sidebar {
+        display: none; /* hide sidebar */
+      }
+      .mobile-nav {
+        display: flex; /* show mobile navigation */
+      }
+      .content {
+        padding: 2rem 1.5rem;
+      }
     }
   </style>
 </head>
@@ -241,8 +294,16 @@
     <p>from zero to advanced — simple words, real code</p>
   </header>
 
+  <!-- mobile navigation (dropdown + go button) -->
+  <div class="mobile-nav">
+    <label for="module-select">📚 Jump to module:</label>
+    <select id="module-select"></select>
+    <button class="go-btn" id="go-btn">Go</button>
+  </div>
+
   <div class="wrapper">
-    <nav class="sidebar">
+    <!-- desktop sidebar (hidden on mobile) -->
+    <nav class="sidebar" id="desktop-sidebar">
       <h3>📌 PHASE 1 · FOUNDATION</h3>
       <ul>
         <li><a href="#intro">1.1 Hello world & setup</a></li>
@@ -278,8 +339,9 @@
       </ul>
     </nav>
 
+    <!-- main content (all modules with full explanations) -->
     <main class="content">
-      <!-- ========== PHASE 1 (with detailed explanations) ========== -->
+      <!-- PHASE 1 modules (full explanations) -->
       <section id="intro" class="module">
         <h2>🔰 1.1 Hello, world!</h2>
         <div class="explain">
@@ -403,7 +465,7 @@
         <button class="btn-run" data-code="function greet(name) { return 'Hello, ' + name + '!'; } let message = greet('Sam'); console.log(message);">▶ run example</button>
       </section>
 
-      <!-- ========== PHASE 2 (with detailed explanations) ========== -->
+      <!-- PHASE 2 modules -->
       <section id="objects" class="module">
         <h2>🏷️ 2.1 Objects</h2>
         <div class="explain">
@@ -504,7 +566,7 @@
         <button class="btn-run" data-code="let person = { name: 'Mia', age: 28 }; let jsonString = JSON.stringify(person); console.log('JSON:', jsonString); let backToObject = JSON.parse(jsonString); console.log('parsed name:', backToObject.name);">▶ run example</button>
       </section>
 
-      <!-- ========== PHASE 3 (already enhanced) ========== -->
+      <!-- PHASE 3 modules (shortened for brevity, but full explanations remain) -->
       <section id="async" class="module">
         <h2>⏳ 3.1 Asynchronous JavaScript</h2>
         <div class="explain">
@@ -608,7 +670,7 @@
         <button class="btn-run" data-code="console.log('Git basics: init, add, commit, push');">▶ show message</button>
       </section>
 
-      <!-- ========== PHASE 4 (already enhanced) ========== -->
+      <!-- PHASE 4 modules -->
       <section id="adv-functions" class="module">
         <h2>🎣 4.1 Advanced functions (closures)</h2>
         <div class="explain">
@@ -697,7 +759,7 @@
         <button class="btn-run" data-code="localStorage.setItem('username', 'Alex'); let name = localStorage.getItem('username'); console.log('from storage:', name); document.getElementById('storedName').innerText = name;">▶ run storage demo</button>
         <button class="btn-run" data-code="localStorage.removeItem('username'); document.getElementById('storedName').innerText = '(not set)'; console.log('storage cleared');">🗑️ clear storage</button>
         <script>
-          // interactive buttons for storage demo
+          // interactive buttons for storage demo (keep as before)
           document.addEventListener('DOMContentLoaded', function() {
             const saveBtn = document.getElementById('saveStorage');
             const loadBtn = document.getElementById('loadStorage');
@@ -741,7 +803,7 @@
         <button class="btn-run" data-code="function debounce(fn, delay) { let timer; return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), delay); }; } const sayHi = debounce(() => console.log('hi (debounced)'), 1000); sayHi(); sayHi(); sayHi(); console.log('called 3 times, but only one hi after delay');">▶ run debounce example</button>
       </section>
 
-      <!-- global console panel -->
+      <!-- console panel -->
       <div class="console-panel">
         <h3>📟 live console output</h3>
         <div id="console-output">
@@ -753,14 +815,13 @@
 
   <script>
     (function() {
+      // --- live console (unchanged) ---
       const outputDiv = document.getElementById('console-output');
-
       function runCode(code) {
         outputDiv.innerHTML = '';
         const originalLog = console.log;
         const originalError = console.error;
         const originalWarn = console.warn;
-
         console.log = function(...args) {
           const line = args.map(arg => 
             (typeof arg === 'object' && arg !== null) ? JSON.stringify(arg, null, 2) : String(arg)
@@ -768,19 +829,16 @@
           outputDiv.innerHTML += `<div>> ${line}</div>`;
           originalLog.apply(console, args);
         };
-
         console.error = function(...args) {
           const line = args.map(String).join(' ');
           outputDiv.innerHTML += `<div style="color: #ff9393;">⛔ ${line}</div>`;
           originalError.apply(console, args);
         };
-
         console.warn = function(...args) {
           const line = args.map(String).join(' ');
           outputDiv.innerHTML += `<div style="color: #f7d44e;">⚠️ ${line}</div>`;
           originalWarn.apply(console, args);
         };
-
         try {
           const func = new Function(code);
           func();
@@ -793,6 +851,7 @@
         }
       }
 
+      // attach run buttons
       const buttons = document.querySelectorAll('.btn-run');
       buttons.forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -801,6 +860,7 @@
         });
       });
 
+      // desktop sidebar smooth scroll
       document.querySelectorAll('.sidebar a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           e.preventDefault();
@@ -808,6 +868,37 @@
           document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
         });
       });
+
+      // --- mobile navigation: populate dropdown and go button ---
+      const sidebarLinks = document.querySelectorAll('#desktop-sidebar a');
+      const select = document.getElementById('module-select');
+      const goBtn = document.getElementById('go-btn');
+
+      if (select && sidebarLinks.length) {
+        // build options from sidebar links
+        sidebarLinks.forEach(link => {
+          const option = document.createElement('option');
+          option.value = link.getAttribute('href'); // e.g. "#intro"
+          option.textContent = link.textContent;    // e.g. "1.1 Hello world & setup"
+          select.appendChild(option);
+        });
+
+        // go button click: scroll to selected module
+        goBtn.addEventListener('click', function() {
+          const selected = select.value;
+          if (selected) {
+            const target = document.querySelector(selected);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        });
+
+        // optional: also allow select change to jump (some users expect that)
+        select.addEventListener('change', function() {
+          // you could auto-scroll on change, but we stick to "Go" button for clarity
+        });
+      }
     })();
   </script>
 </body>
